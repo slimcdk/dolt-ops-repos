@@ -12,13 +12,18 @@ RUN GO111MODULE="on" CGO_ENABLED=0 GOOS=linux go install ./cmd/git-dolt
 RUN GO111MODULE="on" CGO_ENABLED=0 GOOS=linux go install ./cmd/git-dolt-smudge
 
 
-FROM alpine:3.6 as alpine
+FROM alpine:latest as alpine
 RUN apk add -U --no-cache ca-certificates
 
 
 FROM scratch
+# ENV PATH="/go/bin:$PATH"
 COPY --from=builder /go/bin/ /usr/local/bin/
 COPY --from=dolt-installer /go/bin/ /usr/local/bin/
 COPY --from=alpine /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+VOLUME /data
 WORKDIR /data
-ENTRYPOINT [ "app" ]
+#ENTRYPOINT [ "app" ]
+
+ENTRYPOINT ["dolt"]
+CMD [ "clone", "dolthub/city-populations" ]
