@@ -35,6 +35,6 @@ func main() {
 	if resp, err := resty.New().SetHostURL(APIEndpoint).R().SetQueryParamsFromValues(v).SetResult(&reports).Get(APIEndpoint); err != nil {
 		log.Fatalln(err)
 	} else {
-		fmt.Printf("Got %d reports for %s", reports.TotalNumberOfNews, resp.Request.URL)
+		fmt.Printf("Got %d reports for %s\n", reports.TotalNumberOfNews, resp.Request.URL)
 	}
 }
